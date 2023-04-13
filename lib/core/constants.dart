@@ -1,0 +1,1 @@
+enum TossDecision { batting, fielding }

@@ -1,3 +1,5 @@
+import 'package:cricket_scorer/core/events/match_event.dart';
+import 'package:cricket_scorer/core/match_summary.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,13 +13,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'STEP Cricket',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: "/",
+      routes: {
+        "/": (context) => const MyHomePage(title: 'STEP Cricket'),
+        "/play-match": (context) => const PlayMatchPage(),
+      },
     );
   }
+}
+
+class PlayMatchPage extends StatelessWidget {
+  const PlayMatchPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text("Match screen");
+  }
+
 }
 
 class MyHomePage extends StatefulWidget {
@@ -29,12 +45,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final MatchSummary summary = MatchSummary();
+  final List<MatchEvent> events = [];
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void _letsPlay() {
+    Navigator.pushNamed(context, '/play-match');
   }
 
   @override
@@ -43,25 +58,66 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Container(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          const TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Team 1",
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 14),
+          const TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: "Team 2",
+            ),
+          ),
+          const SizedBox(height: 28),
+          TossSection(),
+          TextButton(onPressed: _letsPlay, child: const Text("Let's Play"))
+        ]),
+      ),
+    );
+  }
+}
+
+class TossSection extends StatelessWidget {
+  const TossSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Toss Winner"),
+            DropdownButton(
+              items: [
+                DropdownMenuItem<String>(value: "Team 1", child: Text("Team 1")),
+                DropdownMenuItem<String>(value: "Team 2", child: Text("Team 2")),
+              ],
+              onChanged: (x) => {},
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Decision"),
+            DropdownButton(
+              items: [
+                DropdownMenuItem<String>(value: "Batting", child: Text("Batting")),
+                DropdownMenuItem<String>(value: "Fielding", child: Text("Fielding")),
+              ],
+              onChanged: (x) => {},
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

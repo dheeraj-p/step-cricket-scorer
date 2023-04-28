@@ -1,52 +1,20 @@
 import 'package:cricket_scorer/core/constants.dart';
+import 'package:cricket_scorer/core/events/match_event.dart';
+import 'package:cricket_scorer/core/events/match_start.dart';
+import 'package:cricket_scorer/core/events/toss.dart';
+import 'package:cricket_scorer/core/match_summary.dart';
+import 'package:cricket_scorer/core/models/toss_data.dart';
 
-void main(List<String> args) {}
+void main(List<String> args) {
+  MatchSummary summary = MatchSummary();
+  List<MatchEvent> events = [];
 
-const match = {
-  'toss': {'winning_team': '', 'decision': ''},
-  'innings': [
-    {
-      'team': '',
-      'overs': [
-        {
-          'deliveris': [
-            {
-              'bowler': '',
-              'batter': '',
-              'non_striker': '',
-              'runs': {'extras': 0, 'batter': 0, 'total': 0},
-              'extras': {'wide': 0, 'byes': 0, 'leg_byes': 0, 'no_ball': 0},
-              'dismissal': {
-                'type': '',
-                'fielders': [], // Names of fielders involved
-                'batter': ''
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
+  events.add(MatchStartEvent("Dheeraj", "Tilak"));
+  events.add(const TossEvent(TossData("Dheeraj", TossDecision.batting)));
 
-Map<String, dynamic> newMatch(List<String> teams, int tossWonBy, TossDecision tossDecision) {
-  return {
-    'toss': {'winning_team': teams[tossWonBy], 'decision': tossDecision},
-    'innings': [
-      {'team': _getBattingTeam(teams, tossWonBy, tossDecision), 'overs': []}
-    ]
-  };
-}
+  for (MatchEvent event in events) {
+    event.apply(summary);
+  }
 
-Map<String, dynamic> newDelivery(Map<String, dynamic> match) {
-  return {};
-}
-
-String _getBattingTeam(
-    List<String> teams, int tossWonBy, TossDecision tossDecision) {
-  var battingTeam = teams[tossWonBy];
-  var tossLosingTeamIndx = (tossWonBy + 1) % 2;
-  return tossDecision == TossDecision.batting
-      ? battingTeam
-      : teams[tossLosingTeamIndx];
+  print(summary.toString());
 }

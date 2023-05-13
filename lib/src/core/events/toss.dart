@@ -1,7 +1,7 @@
-import 'package:cricket_scorer/core/constants.dart';
-import 'package:cricket_scorer/core/events/match_event.dart';
-import 'package:cricket_scorer/core/match_summary.dart';
-import 'package:cricket_scorer/core/models/toss_data.dart';
+import 'package:cricket_scorer/src/core/constants.dart';
+import 'package:cricket_scorer/src/core/events/match_event.dart';
+import 'package:cricket_scorer/src/core/match_summary.dart';
+import 'package:cricket_scorer/src/core/models/toss_data.dart';
 
 class TossEvent implements MatchEvent {
   final TossData _tossData;

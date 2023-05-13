@@ -1,5 +1,5 @@
-import 'package:cricket_scorer/core/constants.dart';
-import 'package:cricket_scorer/core/models/toss_data.dart';
+import 'package:cricket_scorer/src/core/constants.dart';
+import 'package:cricket_scorer/src/core/models/toss_data.dart';
 
 class MatchSummary {
   late Team teamA;
@@ -11,7 +11,7 @@ class MatchSummary {
     teamB = Team(teamBName);
   }
 
-  addTossDetails(String winner, TossDecision decision) {
+  addTossDetails(TeamOrder winner, TossDecision decision) {
     _tossData = TossData(winner, decision);
   }
 

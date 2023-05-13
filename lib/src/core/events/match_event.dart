@@ -1,5 +1,5 @@
-import 'package:cricket_scorer/core/constants.dart';
-import 'package:cricket_scorer/core/match_summary.dart';
+import 'package:cricket_scorer/src/core/constants.dart';
+import 'package:cricket_scorer/src/core/match_summary.dart';
 
 class MatchEvent {
   final EventType type;

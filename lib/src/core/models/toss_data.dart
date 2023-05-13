@@ -1,7 +1,7 @@
-import 'package:cricket_scorer/core/constants.dart';
+import 'package:cricket_scorer/src/core/constants.dart';
 
 class TossData {
-  final String winner;
+  final TeamOrder winner;
   final TossDecision decision;
 
   const TossData(this.winner, this.decision);

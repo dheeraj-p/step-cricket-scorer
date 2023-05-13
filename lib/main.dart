@@ -1,5 +1,11 @@
-import 'package:cricket_scorer/core/events/match_event.dart';
-import 'package:cricket_scorer/core/match_summary.dart';
+import 'package:cricket_scorer/src/widgets/input_text.dart';
+import 'package:cricket_scorer/src/core/constants.dart';
+import 'package:cricket_scorer/src/core/events/match_event.dart';
+import 'package:cricket_scorer/src/core/events/match_start.dart';
+import 'package:cricket_scorer/src/core/events/toss.dart';
+import 'package:cricket_scorer/src/core/match_summary.dart';
+import 'package:cricket_scorer/src/core/models/toss_data.dart';
+import 'package:cricket_scorer/src/widgets/toss_section.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -31,9 +37,15 @@ class PlayMatchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Match screen");
-  }
+    final MatchSummary summary = ModalRoute.of(context)?.settings.arguments as MatchSummary;
 
+    return Scaffold(
+      appBar: AppBar(title: Text("STEP Cricket")),
+      body: Container(
+        child: Text(summary.toString()),
+      ),
+    );
+  }
 }
 
 class MyHomePage extends StatefulWidget {
@@ -47,9 +59,19 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final MatchSummary summary = MatchSummary();
   final List<MatchEvent> events = [];
+  String _team1 = "Team 1", _team2 = "Team 2";
+  TossDecision _tossDecision = TossDecision.batting;
+  TeamOrder _tossWinner = TeamOrder.team1;
 
   void _letsPlay() {
-    Navigator.pushNamed(context, '/play-match');
+    events.add(MatchStartEvent(_team1, _team2));
+    events.add(TossEvent(TossData(_tossWinner, _tossDecision)));
+
+    for (var event in events) {
+      event.apply(summary);
+    }
+
+    Navigator.pushNamed(context, '/play-match', arguments: summary);
   }
 
   @override
@@ -61,63 +83,29 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "Team 1",
-            ),
+          InputText(
+            label: "Team 1",
+            onChanged: (v) => _team1 = v,
           ),
           const SizedBox(height: 14),
-          const TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "Team 2",
-            ),
+          InputText(
+            label: "Team 2",
+            onChanged: (v) => _team2 = v,
           ),
           const SizedBox(height: 28),
-          TossSection(),
+          TossSection(
+            onTossDecisionChange: (decision) => setState(() {
+              _tossDecision = decision!;
+            }),
+            onTossWinnerChange: (winner) => setState(() {
+              _tossWinner = winner!;
+            }),
+            winnerTeam: _tossWinner,
+            decision: _tossDecision,
+          ),
           TextButton(onPressed: _letsPlay, child: const Text("Let's Play"))
         ]),
       ),
-    );
-  }
-}
-
-class TossSection extends StatelessWidget {
-  const TossSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Toss Winner"),
-            DropdownButton(
-              items: [
-                DropdownMenuItem<String>(value: "Team 1", child: Text("Team 1")),
-                DropdownMenuItem<String>(value: "Team 2", child: Text("Team 2")),
-              ],
-              onChanged: (x) => {},
-            ),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("Decision"),
-            DropdownButton(
-              items: [
-                DropdownMenuItem<String>(value: "Batting", child: Text("Batting")),
-                DropdownMenuItem<String>(value: "Fielding", child: Text("Fielding")),
-              ],
-              onChanged: (x) => {},
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

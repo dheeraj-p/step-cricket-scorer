@@ -2,56 +2,52 @@ import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/widgets/card_view.dart';
 import 'package:flutter/material.dart';
 
-class TossSection extends StatefulWidget {
-  String team1;
-  String team2;
-  TeamOrder? toss;
-  Function(TeamOrder?)? onTossWin;
+class DecisionSection extends StatefulWidget {
+  TossDecision? decision;
+  Function(TossDecision?)? onDecisionMaking;
 
-  TossSection({
+  DecisionSection({
     super.key,
-    required this.team1,
-    required this.team2,
-    required this.toss,
-    required this.onTossWin,
+    required this.decision,
+    required this.onDecisionMaking,
   });
 
   @override
-  State<TossSection> createState() => _NewTossState();
+  State<DecisionSection> createState() => _NewDecisionState();
 
 }
 
-class _NewTossState extends State<TossSection> {
+class _NewDecisionState extends State<DecisionSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CardView(
-          header: "Toss",
+          header: "Decision",
           height: 120,
           width: 380,
           childrenWidgets: [
             ListTile(
               title: Text(
-                widget.team1,
+                "Batting",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              leading: Radio<TeamOrder>(
-                value: TeamOrder.team1,
-                groupValue: widget.toss,
-                onChanged: widget.onTossWin,
+              leading: Radio<TossDecision>(
+                value: TossDecision.batting,
+                groupValue: widget.decision,
+                onChanged: widget.onDecisionMaking,
               ),
             ),
             ListTile(
               title: Text(
-                widget.team2,
+                "Fielding",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              leading: Radio<TeamOrder>(
-                value: TeamOrder.team2,
-                groupValue: widget.toss,
-                onChanged: widget.onTossWin,
+              leading: Radio<TossDecision>(
+                value: TossDecision.fielding,
+                groupValue: widget.decision,
+                onChanged: widget.onDecisionMaking,
               ),
             ),
           ],

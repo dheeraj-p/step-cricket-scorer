@@ -1,13 +1,15 @@
 import 'package:cricket_scorer/src/screens/play_match.dart';
-import 'package:cricket_scorer/src/widgets/input_text.dart';
 import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/core/events/match_event.dart';
 import 'package:cricket_scorer/src/core/events/match_start.dart';
 import 'package:cricket_scorer/src/core/events/toss.dart';
 import 'package:cricket_scorer/src/core/match_summary.dart';
 import 'package:cricket_scorer/src/core/models/toss_data.dart';
+import 'package:cricket_scorer/src/widgets/decision_section.dart';
+import 'package:cricket_scorer/src/widgets/team_section.dart';
 import 'package:cricket_scorer/src/widgets/toss_section.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,11 +24,19 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'STEP Cricket',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        cardTheme: const CardTheme(
+          elevation: 6,
+        ),
+        textTheme: TextTheme(
+          bodyLarge: GoogleFonts.ubuntu(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.white),
+          bodyMedium: GoogleFonts.notoSans(fontSize: 20, height: 1.8, fontWeight: FontWeight.bold, color: Colors.black),
+          bodySmall: GoogleFonts.sourceSansPro(fontSize: 12, height: 2, color: Colors.black),
+        ),
+        primarySwatch: Colors.deepPurple,
       ),
       initialRoute: "/",
       routes: {
-        "/": (context) => const MyHomePage(title: 'STEP Cricket'),
+        "/": (context) => const MyHomePage(titleFirst: 'STEP', titleLast: 'Cricket'),
         "/play-match": (context) => const PlayMatchPage(),
       },
     );
@@ -34,8 +44,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  const MyHomePage({super.key, required this.titleFirst, required this.titleLast});
+  final String titleFirst, titleLast;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -44,7 +54,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final MatchSummary summary = MatchSummary();
   final List<MatchEvent> events = [];
-  String _team1 = "Team 1", _team2 = "Team 2";
+  String _team1 = defaultTeam1Name, _team2 = defaultTeam2Name;
   TossDecision _tossDecision = TossDecision.batting;
   TeamOrder _tossWinner = TeamOrder.team1;
 
@@ -63,33 +73,77 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Row(
+            children: [
+              Text(
+                  widget.titleFirst,
+                  style: Theme.of(context).textTheme.bodyLarge
+              ),
+              Text(
+                  widget.titleLast,
+                  style: Theme.of(context).textTheme.bodyMedium
+              ),
+            ]
+        ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          InputText(
-            label: "Team 1",
-            onChanged: (v) => _team1 = v,
+      body: ListView(
+        children: <Widget>[
+          Center(
+            child: Column(
+            children: [
+              TeamSection(
+                team1: _team1,
+                team2: _team2,
+                onTeam1NameChange: (value) {
+                  setState(() {
+                    _team1 = value;
+                    if (value.trim().isEmpty) {
+                      _team1 = defaultTeam1Name;
+                    }
+                  });
+                },
+                onTeam2NameChange: (value) {
+                  setState(() {
+                    _team2 = value;
+                    if (value.trim().isEmpty) {
+                      _team2 = defaultTeam1Name;
+                    }
+                  });
+                },
+              ),
+              TossSection(
+                team1: _team1,
+                team2: _team2,
+                toss: _tossWinner,
+                onTossWin: (TeamOrder? value) {
+                  setState(() {
+                    _tossWinner = value!;
+                  });
+                },
+              ),
+              DecisionSection(
+                decision: _tossDecision,
+                onDecisionMaking: (TossDecision? value) {
+                  setState(() {
+                    _tossDecision = value!;
+                  });
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  height: 50,
+                  width: 380,
+                  child: ElevatedButton(
+                    onPressed: _letsPlay,
+                    child: const Text("Start Match")
+                  ),
+                ),
+              )
+            ],
           ),
-          const SizedBox(height: 14),
-          InputText(
-            label: "Team 2",
-            onChanged: (v) => _team2 = v,
-          ),
-          const SizedBox(height: 28),
-          TossSection(
-            onTossDecisionChange: (decision) => setState(() {
-              _tossDecision = decision!;
-            }),
-            onTossWinnerChange: (winner) => setState(() {
-              _tossWinner = winner!;
-            }),
-            winnerTeam: _tossWinner,
-            decision: _tossDecision,
-          ),
-          TextButton(onPressed: _letsPlay, child: const Text("Let's Play"))
-        ]),
+        ),
+        ],
       ),
     );
   }

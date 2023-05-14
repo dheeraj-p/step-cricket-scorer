@@ -10,7 +10,7 @@ class PlayMatchPage extends StatelessWidget {
     final MatchSummary summary = ModalRoute.of(context)?.settings.arguments as MatchSummary;
 
     return Scaffold(
-      appBar: AppBar(title: Text("STEP Cricket")),
+      appBar: AppBar(title: const Text("STEP Cricket")),
       body: Column(
         children: [
           Row(

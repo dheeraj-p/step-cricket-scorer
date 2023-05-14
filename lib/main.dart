@@ -1,3 +1,4 @@
+import 'package:cricket_scorer/src/screens/play_match.dart';
 import 'package:cricket_scorer/src/widgets/input_text.dart';
 import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/core/events/match_event.dart';
@@ -28,22 +29,6 @@ class MyApp extends StatelessWidget {
         "/": (context) => const MyHomePage(title: 'STEP Cricket'),
         "/play-match": (context) => const PlayMatchPage(),
       },
-    );
-  }
-}
-
-class PlayMatchPage extends StatelessWidget {
-  const PlayMatchPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final MatchSummary summary = ModalRoute.of(context)?.settings.arguments as MatchSummary;
-
-    return Scaffold(
-      appBar: AppBar(title: Text("STEP Cricket")),
-      body: Container(
-        child: Text(summary.toString()),
-      ),
     );
   }
 }

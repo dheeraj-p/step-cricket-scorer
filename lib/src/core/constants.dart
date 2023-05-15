@@ -1,3 +1,6 @@
+const defaultTitleFirst = "STEP";
+const defaultTitleLast = "cricket";
+
 enum TossDecision { batting, fielding }
 
 enum TeamOrder { team1, team2 }

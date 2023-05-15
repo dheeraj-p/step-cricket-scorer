@@ -2,7 +2,7 @@ import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/widgets/card_view.dart';
 import 'package:flutter/material.dart';
 
-class TossSection extends StatefulWidget {
+class TossSection extends StatelessWidget {
   String team1;
   String team2;
   TeamOrder? toss;
@@ -17,12 +17,6 @@ class TossSection extends StatefulWidget {
   });
 
   @override
-  State<TossSection> createState() => _NewTossState();
-
-}
-
-class _NewTossState extends State<TossSection> {
-  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,24 +28,24 @@ class _NewTossState extends State<TossSection> {
           childrenWidgets: [
             ListTile(
               title: Text(
-                widget.team1,
+                team1,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               leading: Radio<TeamOrder>(
                 value: TeamOrder.team1,
-                groupValue: widget.toss,
-                onChanged: widget.onTossWin,
+                groupValue: toss,
+                onChanged: onTossWin,
               ),
             ),
             ListTile(
               title: Text(
-                widget.team2,
+                team2,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               leading: Radio<TeamOrder>(
                 value: TeamOrder.team2,
-                groupValue: widget.toss,
-                onChanged: widget.onTossWin,
+                groupValue: toss,
+                onChanged: onTossWin,
               ),
             ),
           ],
@@ -59,5 +53,4 @@ class _NewTossState extends State<TossSection> {
       ],
     );
   }
-
 }

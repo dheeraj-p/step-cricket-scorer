@@ -2,7 +2,7 @@ import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/widgets/card_view.dart';
 import 'package:flutter/material.dart';
 
-class DecisionSection extends StatefulWidget {
+class DecisionSection extends StatelessWidget {
   TossDecision? decision;
   Function(TossDecision?)? onDecisionMaking;
 
@@ -12,12 +12,6 @@ class DecisionSection extends StatefulWidget {
     required this.onDecisionMaking,
   });
 
-  @override
-  State<DecisionSection> createState() => _NewDecisionState();
-
-}
-
-class _NewDecisionState extends State<DecisionSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,8 +29,8 @@ class _NewDecisionState extends State<DecisionSection> {
               ),
               leading: Radio<TossDecision>(
                 value: TossDecision.batting,
-                groupValue: widget.decision,
-                onChanged: widget.onDecisionMaking,
+                groupValue: decision,
+                onChanged: onDecisionMaking,
               ),
             ),
             ListTile(
@@ -46,8 +40,8 @@ class _NewDecisionState extends State<DecisionSection> {
               ),
               leading: Radio<TossDecision>(
                 value: TossDecision.fielding,
-                groupValue: widget.decision,
-                onChanged: widget.onDecisionMaking,
+                groupValue: decision,
+                onChanged: onDecisionMaking,
               ),
             ),
           ],
@@ -55,5 +49,4 @@ class _NewDecisionState extends State<DecisionSection> {
       ],
     );
   }
-
 }

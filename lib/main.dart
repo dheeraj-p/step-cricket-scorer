@@ -5,7 +5,9 @@ import 'package:cricket_scorer/src/core/events/match_start.dart';
 import 'package:cricket_scorer/src/core/events/toss.dart';
 import 'package:cricket_scorer/src/core/match_summary.dart';
 import 'package:cricket_scorer/src/core/models/toss_data.dart';
+import 'package:cricket_scorer/src/widgets/title_bar.dart';
 import 'package:cricket_scorer/src/widgets/decision_section.dart';
+import 'package:cricket_scorer/src/widgets/overs_section.dart';
 import 'package:cricket_scorer/src/widgets/team_section.dart';
 import 'package:cricket_scorer/src/widgets/toss_section.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +38,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: "/",
       routes: {
-        "/": (context) => const MyHomePage(titleFirst: 'STEP', titleLast: 'Cricket'),
+        "/": (context) => const MyHomePage(),
         "/play-match": (context) => const PlayMatchPage(),
       },
     );
@@ -44,8 +46,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.titleFirst, required this.titleLast});
-  final String titleFirst, titleLast;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -55,10 +56,20 @@ class _MyHomePageState extends State<MyHomePage> {
   final MatchSummary summary = MatchSummary();
   final List<MatchEvent> events = [];
   String _team1 = defaultTeam1Name, _team2 = defaultTeam2Name;
+  int _overs = 0;
   TossDecision _tossDecision = TossDecision.batting;
   TeamOrder _tossWinner = TeamOrder.team1;
 
   void _letsPlay() {
+    if (_overs == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            duration: Duration(seconds: 5),
+            content: Text('Over cannot be zero'),
+          )
+      );
+      return;
+    }
     events.add(MatchStartEvent(_team1, _team2));
     events.add(TossEvent(TossData(_tossWinner, _tossDecision)));
 
@@ -73,18 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-            children: [
-              Text(
-                  widget.titleFirst,
-                  style: Theme.of(context).textTheme.bodyLarge
-              ),
-              Text(
-                  widget.titleLast,
-                  style: Theme.of(context).textTheme.bodyMedium
-              ),
-            ]
-        ),
+        title: const TitleBar(),
       ),
       body: ListView(
         children: <Widget>[
@@ -127,6 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   setState(() {
                     _tossDecision = value!;
                   });
+                },
+              ),
+              OversSection(
+                overs: _overs,
+                onOversChange: (value) {
+                  _overs = int.parse(value);
                 },
               ),
               Padding(

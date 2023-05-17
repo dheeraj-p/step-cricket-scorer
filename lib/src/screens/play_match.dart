@@ -1,3 +1,4 @@
+import 'package:cricket_scorer/src/widgets/title_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../core/match_summary.dart';
@@ -10,13 +11,12 @@ class PlayMatchPage extends StatelessWidget {
     final MatchSummary summary = ModalRoute.of(context)?.settings.arguments as MatchSummary;
 
     return Scaffold(
-      appBar: AppBar(title: Text("STEP Cricket")),
+      appBar: AppBar(title: const TitleBar()),
       body: Column(
         children: [
           Row(
             children: [
-              Column(),
-              Column()
+              Text(summary.toString()),
             ],
           ),
         ],

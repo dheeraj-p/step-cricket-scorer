@@ -21,7 +21,7 @@ class MatchSummary {
   String toString() {
     String result = 'First Team: ${teamA.name} \n';
     result += 'Second Team: ${teamB.name} \n';
-    result += 'Toss Won By: ${tossData.winner} ';
+    result += 'Toss Won By: ${tossData.winner} \n';
     result += 'opted to : ${tossData.decision} First \n';
 
     return result;

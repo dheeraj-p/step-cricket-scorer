@@ -2,18 +2,14 @@ import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/widgets/card_view.dart';
 import 'package:flutter/material.dart';
 
-class TossSection extends StatelessWidget {
-  String team1;
-  String team2;
-  TeamOrder? toss;
-  Function(TeamOrder?)? onTossWin;
+class DecisionSection extends StatelessWidget {
+  TossDecision? decision;
+  Function(TossDecision?)? onDecisionMaking;
 
-  TossSection({
+  DecisionSection({
     super.key,
-    required this.team1,
-    required this.team2,
-    required this.toss,
-    required this.onTossWin,
+    required this.decision,
+    required this.onDecisionMaking,
   });
 
   @override
@@ -22,30 +18,30 @@ class TossSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CardView(
-          header: "Toss",
+          header: "Decision",
           height: 120,
           width: 380,
           childrenWidgets: [
             ListTile(
               title: Text(
-                team1,
+                "Batting",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              leading: Radio<TeamOrder>(
-                value: TeamOrder.team1,
-                groupValue: toss,
-                onChanged: onTossWin,
+              leading: Radio<TossDecision>(
+                value: TossDecision.batting,
+                groupValue: decision,
+                onChanged: onDecisionMaking,
               ),
             ),
             ListTile(
               title: Text(
-                team2,
+                "Fielding",
                 style: Theme.of(context).textTheme.bodySmall,
               ),
-              leading: Radio<TeamOrder>(
-                value: TeamOrder.team2,
-                groupValue: toss,
-                onChanged: onTossWin,
+              leading: Radio<TossDecision>(
+                value: TossDecision.fielding,
+                groupValue: decision,
+                onChanged: onDecisionMaking,
               ),
             ),
           ],

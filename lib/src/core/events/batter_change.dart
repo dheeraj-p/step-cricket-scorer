@@ -1,7 +1,9 @@
 import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/core/events/match_event.dart';
 import 'package:cricket_scorer/src/core/match_summary.dart';
-import 'package:cricket_scorer/src/core/models/batter.dart';
+import 'package:cricket_scorer/src/core/models/batting_stats.dart';
+import 'package:cricket_scorer/src/core/models/bowling_stats.dart';
+import 'package:cricket_scorer/src/core/models/player.dart';
 
 class BatterChangeEvent implements MatchEvent {
   final String name;
@@ -15,7 +17,7 @@ class BatterChangeEvent implements MatchEvent {
 
   @override
   void apply(MatchSummary currentState) {
-    Batter batter = Batter(name);
+    Player batter = Player(name, BattingStats(), BowlingStats());
     if (_isStriker()) {
       currentState.setStriker(batter);
       return;

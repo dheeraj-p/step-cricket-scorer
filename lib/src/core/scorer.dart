@@ -1,6 +1,7 @@
 import 'package:cricket_scorer/src/core/constants.dart';
-import 'package:cricket_scorer/src/core/events/change_batter.dart';
+import 'package:cricket_scorer/src/core/events/bowler_change.dart';
 import 'package:cricket_scorer/src/core/events/match_event.dart';
+import 'package:cricket_scorer/src/core/events/batter_change.dart';
 import 'package:cricket_scorer/src/core/events/match_start.dart';
 import 'package:cricket_scorer/src/core/events/overs_set.dart';
 import 'package:cricket_scorer/src/core/events/toss.dart';
@@ -16,6 +17,7 @@ void main(List<String> args) {
   events.add(OversSetEvent(10));
   events.add(const BatterChangeEvent("Dheeraj", BatterEnd.striker));
   events.add(const BatterChangeEvent("Chandan", BatterEnd.nonStriker));
+  events.add(const BowlerChangeEvent("Tilak"));
 
   for (MatchEvent event in events) {
     event.apply(summary);

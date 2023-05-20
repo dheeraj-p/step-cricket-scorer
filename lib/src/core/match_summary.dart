@@ -1,5 +1,5 @@
 import 'package:cricket_scorer/src/core/constants.dart';
-import 'package:cricket_scorer/src/core/models/batter.dart';
+import 'package:cricket_scorer/src/core/models/player.dart';
 import 'package:cricket_scorer/src/core/models/toss_data.dart';
 
 class MatchSummary {
@@ -7,8 +7,9 @@ class MatchSummary {
   late Team _teamB;
   late TossData _tossData;
   late int _totalOvers;
-  late Batter _striker;
-  late Batter _nonStriker;
+  late Player _striker;
+  late Player _nonStriker;
+  late Player _bowler;
 
   setTeams(String teamAName, String teamBName) {
     _teamA = Team(teamAName);
@@ -23,12 +24,16 @@ class MatchSummary {
     _totalOvers = overs;
   }
 
-  setStriker(Batter batter) {
+  setStriker(Player batter) {
     _striker = batter;
   }
 
-  setNonStriker(Batter batter) {
+  setNonStriker(Player batter) {
     _nonStriker = batter;
+  }
+
+  setBowler(Player bowler) {
+    _bowler = bowler;
   }
 
   TossData get tossData => _tossData;
@@ -42,6 +47,7 @@ class MatchSummary {
     result += 'Total Overs : $_totalOvers \n';
     result += 'On Strike : $_striker \n';
     result += 'On non-Strike : $_nonStriker \n';
+    result += 'Bowler : $_bowler \n';
 
     return result;
   }

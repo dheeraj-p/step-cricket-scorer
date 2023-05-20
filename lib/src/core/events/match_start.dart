@@ -1,4 +1,3 @@
-import 'package:cricket_scorer/src/core/constants.dart';
 import 'package:cricket_scorer/src/core/events/match_event.dart';
 import 'package:cricket_scorer/src/core/match_summary.dart';
 
@@ -13,9 +12,10 @@ class MatchStartEvent implements MatchEvent {
     summary.setTeams(_teamAName, _teamBName);
   }
 
-  @override
   get data => [_teamAName, _teamBName];
-
+  
   @override
-  EventType get type => EventType.matchStart;
+  String toJSON() {
+    throw UnimplementedError();
+  }
 }

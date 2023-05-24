@@ -8,6 +8,15 @@ class Player {
 
   Player(this._name, this._battingStats, this._bowlingStats);
 
+  Player.from(String name)
+      : _name = name,
+        _battingStats = BattingStats(),
+        _bowlingStats = BowlingStats();
+
+  String get name {
+    return _name;
+  }
+
   @override
   String toString() {
     return _name;

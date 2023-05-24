@@ -11,7 +11,7 @@ class BowlerChangeEvent implements MatchEvent {
 
   @override
   void apply(MatchSummary currentState) {
-    currentState.setBowler(Player(_name, BattingStats(), BowlingStats()));
+    currentState.setBowler(_name);
   }
 
   @override

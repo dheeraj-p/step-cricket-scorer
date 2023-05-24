@@ -10,6 +10,8 @@ class MatchSummary {
   late Player _striker;
   late Player _nonStriker;
   late Player _bowler;
+  late Team _battingTeam;
+  late Team _bowlingTeam;
 
   setTeams(String teamAName, String teamBName) {
     _teamA = Team(teamAName);
@@ -24,19 +26,37 @@ class MatchSummary {
     _totalOvers = overs;
   }
 
-  setStriker(Player batter) {
+  setStriker(String batterName) {
+    Player batter = _battingTeam.getOrAddPlayer(batterName, Player.from(batterName));
     _striker = batter;
   }
 
-  setNonStriker(Player batter) {
+  setNonStriker(String batterName) {
+    Player batter = _battingTeam.getOrAddPlayer(batterName, Player.from(batterName));
     _nonStriker = batter;
   }
 
-  setBowler(Player bowler) {
+  setBowler(String bowlerName) {
+    Player bowler = _bowlingTeam.getOrAddPlayer(bowlerName, Player.from(bowlerName));
     _bowler = bowler;
   }
 
+  setBattingTeam(Team battingTeam) {
+    _battingTeam = battingTeam;
+  }
+
+  setBowlingTeam(Team bowlingTeam) {
+    _bowlingTeam = bowlingTeam;
+  }
+
   TossData get tossData => _tossData;
+
+  Map<TeamOrder, Team> get teams {
+    return {
+      TeamOrder.team1: _teamA,
+      TeamOrder.team2: _teamB,
+    };
+  }
 
   @override
   String toString() {
@@ -55,6 +75,18 @@ class MatchSummary {
 
 class Team {
   final String name;
+  final List<Player> _players = [];
 
-  const Team(this.name);
+  Team(this.name);
+
+  getOrAddPlayer(String playerName, Player defaultPlayer) {
+    if (_hasPlayer(playerName)) {
+      return _players.firstWhere((Player p) => p.name == playerName);
+    }
+
+    _players.add(defaultPlayer);
+    return defaultPlayer;
+  }
+
+  bool _hasPlayer(String playerName) => _players.any((Player p) => p.name == playerName);
 }

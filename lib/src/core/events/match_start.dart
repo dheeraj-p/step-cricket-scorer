@@ -11,8 +11,6 @@ class MatchStartEvent implements MatchEvent {
   void apply(MatchSummary summary) {
     summary.setTeams(_teamAName, _teamBName);
   }
-
-  get data => [_teamAName, _teamBName];
   
   @override
   String toJSON() {

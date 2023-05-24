@@ -17,13 +17,12 @@ class BatterChangeEvent implements MatchEvent {
 
   @override
   void apply(MatchSummary currentState) {
-    Player batter = Player(name, BattingStats(), BowlingStats());
     if (_isStriker()) {
-      currentState.setStriker(batter);
+      currentState.setStriker(name);
       return;
     }
 
-    currentState.setNonStriker(batter);
+    currentState.setNonStriker(name);
   }
 
   @override

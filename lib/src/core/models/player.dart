@@ -13,12 +13,33 @@ class Player {
         _battingStats = BattingStats(),
         _bowlingStats = BowlingStats();
 
+  void score(int runs) {
+    _battingStats.addRuns(runs);
+    addBallToBattingStats();
+  }
+
+  void concede(int runs) {
+    _bowlingStats.addRuns(runs);
+  }
+
+  void addBallToBowlingStats() {
+    _bowlingStats.addBall();
+  }
+
+  void addBallToBattingStats() {
+    _battingStats.addBall();
+  }
+
   String get name {
     return _name;
   }
 
   @override
   String toString() {
-    return _name;
+    String result = "---> $_name's Stats <--- \n";
+    result += _battingStats.toString();
+    result += _bowlingStats.toString();
+
+    return result;
   }
 }

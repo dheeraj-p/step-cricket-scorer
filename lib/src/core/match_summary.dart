@@ -49,6 +49,24 @@ class MatchSummary {
     _bowlingTeam = bowlingTeam;
   }
 
+  addRunsToBatter(int runs) {
+    _striker.score(runs);
+  }
+
+  addRunsToBowler(int runs) {
+    _bowler.concede(runs);
+  }
+
+  addBallToBowler() {
+    _bowler.addBallToBowlingStats();
+  }
+
+  rotateStrike() {
+    final Player prevStriker = _striker;
+    _striker = _nonStriker;
+    _nonStriker = prevStriker;
+  }
+
   TossData get tossData => _tossData;
 
   Map<TeamOrder, Team> get teams {
@@ -65,10 +83,14 @@ class MatchSummary {
     result += 'Toss Won By: ${tossData.winner} \n';
     result += 'opted to : ${tossData.decision} First \n';
     result += 'Total Overs : $_totalOvers \n';
-    result += 'On Strike : $_striker \n';
-    result += 'On non-Strike : $_nonStriker \n';
-    result += 'Bowler : $_bowler \n';
-
+    result += 'On Strike : ${_striker.name} \n';
+    result += 'On non-Strike : ${_nonStriker.name} \n';
+    result += 'Bowler : ${_bowler.name} \n';
+    result += '=============>>> Stats <<<=============\n';
+    result += '$_striker\n';
+    result += '$_nonStriker\n';
+    result += '$_bowler\n';
+    
     return result;
   }
 }
